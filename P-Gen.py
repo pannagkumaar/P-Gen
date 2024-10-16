@@ -388,36 +388,51 @@ class Person:
 
 def person(add_leet, years, leetall, numbers):
     print("Targeting a person.\n")
+    
+    # Get target details
     target = input_person()
-    default_output = False
     global output_file
-    if target.name and target.name != "":
-        create_output_file(target.name + "-" + target.surname + ".txt")
+    output_file = None
+    
+    # Determine the output file name based on available target info
+    if target.name and target.surname:
+        file_name = f"{target.name}-{target.surname}.txt"
+    elif target.name:
+        file_name = f"{target.name}.txt"
     else:
-        create_output_file("P-Gen-output.txt")
-        default_output = True
+        file_name = "P-Gen-output.txt"
 
-    if default_output:
-        output_file = "output/" + "P-Gen-output.txt"
-    else:
-        output_file = "output/" + target.name + "-" + target.surname + ".txt"
-
+    # Set the full output path
+    output_file = f"output/{file_name}"
+    
+    # Inform the user about the output file location
+    print(f"Creating output file: {output_file}")
+    
+    # Get attributes related to the person
     attributes = attr_keywords_in_unique_list(target)
     attributes.extend(list((target.username, target.nickname, target.name, target.middle_name,
-                      target.surname, target.initial_1, target.initial_2, target.initial_3)))
+                            target.surname, target.initial_1, target.initial_2, target.initial_3)))
+    # Remove any duplicates in the attributes list
     attributes = list(set(attributes))
+    
+    # Generate password sets based on various criteria
     trivial_pwds(attributes, years, numbers, output_file)
-
     common_passwords(attributes, years, numbers, output_file)
-
+    
+    # First-round permutations
     subsets = permutations_first_round(attributes, years, numbers, output_file)
-
+    
+    # Further permutation rounds
     permutations_second_round(subsets, years, numbers, output_file)
-
     permutations_third_round(subsets, years, numbers, output_file)
-
+    
+    # Apply leetspeak if specified
     if add_leet or leetall:
         leet_pwds(leetall, output_file)
+    
+    # Completion message
+    print(f"Password generation completed. Output saved to {output_file}")
+
 
 
 
@@ -426,22 +441,22 @@ def input_person():
     print(
         "Enter all the information you know. Leave blank and hit enter if you don't know.\n"
     )
-    target.name = input("[>] Name: ")
-    target.initial_1 = target.name[0]
-    target.middle_name = input("[>] Middle Name: ")
-    target.initial_2 = target.middle_name[0]
-    target.surname = input("[>] Surname: ")
-    target.initial_3 = target.surname[0]
-    target.nickname = input("[>] Nickname: ")
-    target.username = input("[>] Username: ")
-    target.age = input("[>] Age: ")
-    target.birth_day = input("[>] Birth day: ")
-    target.birth_month = input("[>] Birth month: ")
-    target.birth_year = input("[>] Birth year(YYYY): ")
-    target.email = input("[>] Email: ").split("@")[0]
-    target.birth_place = input("[>] Birth place: ")
-    target.first_pet = input("[>] First pet: ")
-    target.favourite_band = input("[>] Favourite Band / Team: ")
+    target.name = input("[>] Name: ") or ''
+    target.initial_1 = target.name[0] if target.name else ''
+    target.middle_name = input("[>] Middle Name: ") or ''
+    target.initial_2 = target.middle_name[0] if target.middle_name else ''
+    target.surname = input("[>] Surname: ") or ''
+    target.initial_3 = target.surname[0] if target.surname else ''
+    target.nickname = input("[>] Nickname: ") or ''
+    target.username = input("[>] Username: ") or ''
+    target.age = input("[>] Age: ") or ''
+    target.birth_day = input("[>] Birth day: ") or ''
+    target.birth_month = input("[>] Birth month: ") or ''
+    target.birth_year = input("[>] Birth year(YYYY): ") or ''
+    target.email = input("[>] Email: ").split("@")[0] if input("[>] Email: ") else ''
+    target.birth_place = input("[>] Birth place: ") or ''
+    target.first_pet = input("[>] First pet: ") or ''
+    target.favourite_band = input("[>] Favourite Band / Team: ") or ''
 
     person_keywords = input(
         "[>] Useful keywords such as relative , favorite things (separated by comma): ")
@@ -559,7 +574,7 @@ if __name__ == "__main__":
         additional_passwords.extend(random_passwords)
 
         
-        passwords = common_pwds + additional_passwords
+    passwords = common_pwds + additional_passwords
     with open(output_file, "a+") as f:
         for password in passwords: 
             f.write(password)
