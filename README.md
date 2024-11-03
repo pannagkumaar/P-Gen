@@ -11,7 +11,7 @@ P-Gen is a Python-based tool for generating password lists based on provided inf
 - Create passwords based on common keyboard patterns.
 - Generate passwords using common phrases.
 - Generate random passwords.
-- Organize passwords into an output folder.
+- Organize passwords into an output folder..
 
 ## Prerequisites
 

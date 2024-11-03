@@ -491,7 +491,7 @@ def permutations_third_round(subsets, years, numbers, output_file):
                         f.write(par1 + symbol + par2 + "\n")
                     else:
                         f.write(par1 + symbol + par2 + "\n")
-                if numbers and len(par1) + len(par2) + 3 >= min_pwd_length:
+                if numbers and len(par1) + len(par2) + 2 >= min_pwd_length:
                     for number in range_21:
                         f.write(par1 + symbol + par2 + str(number) + "\n")
                 if years and len(par1) + len(par2) + 5 >= min_pwd_length:
